@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.validation.Valid;
 
+import com.nice.todolist.dto.UserDto;
+import com.nice.todolist.entities.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,7 +60,16 @@ public class TaskController extends BaseController {
 		return taskService.getAllTasks();
 	}
 
-	
+
+
+	@GetMapping(value = "/{id}")
+	public Task getByTaskId(@PathVariable("id") Long id) {
+		return taskService.findById(id);
+	}
+
+
+
+
 	@PatchMapping(value="/{id}")
     public Task updateTask(@PathVariable("id") Long id, @RequestBody @Valid TaskDto updatedTaskDto) {
 		updatedTaskDto.setId(id);
@@ -80,7 +91,13 @@ public class TaskController extends BaseController {
 	public List<TaskAssignmentResponse> getAllTasksWithAssignedUsers() {
 		return taskAssignmentService.getAllTasksWithAssignedUsers();
 	}
-	
+
+
+	@GetMapping(value="/noCompletewithAssignedUsers")
+	public List<TaskAssignmentResponse> getNotCompletedTasksWithAssignedUsers() {
+		return taskAssignmentService.getNotCompletedTasksWithAssignedUsers();
+	}
+
 	private TaskDto convertFromUserEntityToDto(Task task) {
 		TaskDto taskDto = new TaskDto();
 		
